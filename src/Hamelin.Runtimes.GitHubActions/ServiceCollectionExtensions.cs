@@ -1,5 +1,7 @@
+using Hamelin.Runtimes.GitHubActions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace Hamelin.Runtimes.GitHubActions;
 
@@ -17,6 +19,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddGitHubActionsRuntime(this IServiceCollection services)
     {
         services.TryAddSingleton<IGitHubActionsCommands, GitHubActionsCommands>();
+        services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, GitHubActionsLoggerProvider>());
         return services;
     }
 }
