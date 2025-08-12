@@ -20,7 +20,7 @@ jobs:
           path: 'build'
 
       - name: Run pipeline
-        run: dotnet run --project ./build/Hamelin.Build/Hamelin.Build.csproj
+        run: dotnet run --project ./build/build/Hamelin.Build/Hamelin.Build.csproj
         env:
           Mode: PullRequest
           Build__ProjectFile: 'src/Hamelin.Runtimes.GitHubActions/Hamelin.Runtimes.GitHubActions.csproj'

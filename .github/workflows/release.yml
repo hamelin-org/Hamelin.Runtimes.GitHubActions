@@ -19,7 +19,7 @@ jobs:
           path: 'build'
 
       - name: Run pipeline
-        run: dotnet run --project ./build/Hamelin.Build/Hamelin.Build.csproj
+        run: dotnet run --project ./build/build/Hamelin.Build/Hamelin.Build.csproj
         env:
           Mode: Release
           Build__NuGetApiKey: ${{ secrets.NUGET_API_KEY }}
