@@ -61,7 +61,16 @@ public class GitHubActionsCommands : IGitHubActionsCommands
         Environment.SetEnvironmentVariable("GITHUB_STEP_SUMMARY", summary);
     }
 
-    private static void WriteFileCommand(string command, string message, string? title = null, string? file = null, int? startLine = null, int? endLine = null, int? startColumn = null, int? endColumn = null)
+    private static void WriteFileCommand(
+        string command,
+        string message,
+        string? title = null,
+        string? file = null,
+        int? startLine = null,
+        int? endLine = null,
+        int? startColumn = null,
+        int? endColumn = null
+    )
     {
         var args = new Dictionary<string, string?>()
         {

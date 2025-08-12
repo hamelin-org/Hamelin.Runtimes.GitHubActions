@@ -131,7 +131,7 @@ public class GitHubActionsCommandsTests
         // Arrange
 
         // Act
-        _sut.BeginGroup("Title" );
+        _sut.BeginGroup("Title");
 
         // Assert
         string output = _writer.ToString();
