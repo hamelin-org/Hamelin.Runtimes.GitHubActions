@@ -9,6 +9,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{D9660D
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{32AEF0F6-22C5-4AD3-B71E-CA6C78B8FBBE}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\pr.yml = .github\workflows\pr.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hamelin.Runties.GitHubActions.Tests.Unit", "tests\Hamelin.Runtimes.GitHubActions.Tests.Unit\Hamelin.Runtimes.GitHubActions.Tests.Unit.csproj", "{FB8F9F2B-0BB4-4EB2-BE51-627A19DF71DB}"
 EndProject
