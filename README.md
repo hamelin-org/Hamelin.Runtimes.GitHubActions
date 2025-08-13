@@ -42,6 +42,3 @@ The GitHub Actions integration includes a logging provider that surfaces errors 
 ### Commands
 
 With the GitHub Actions integration registered, you can inject the `IGitHubActionsCommands` interface into your pipeline steps to run commands in the GitHub Actions environment, including manually writing logs, grouping log messages and setting outputs.
-
-
-

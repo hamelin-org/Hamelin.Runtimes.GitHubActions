@@ -8,7 +8,7 @@ public class GitHubActionsLoggerTests
     [Fact]
     public void LogWarning_Text_ShouldLog()
     {
-        // Arranges
+        // Arrange
         var commandsMock = Substitute.For<IGitHubActionsCommands>();
         var logger = new GitHubActionsLogger(commandsMock, null);
 
@@ -22,12 +22,12 @@ public class GitHubActionsLoggerTests
     [Fact]
     public void LogError_WithException_ShouldLog()
     {
-        // Arranges
+        // Arrange
         var commandsMock = Substitute.For<IGitHubActionsCommands>();
         var logger = new GitHubActionsLogger(commandsMock, null);
         var ex = new Exception("Test exception");
 
-        // Acts
+        // Act
         logger.LogError(ex, "Test error");
 
         // Assert

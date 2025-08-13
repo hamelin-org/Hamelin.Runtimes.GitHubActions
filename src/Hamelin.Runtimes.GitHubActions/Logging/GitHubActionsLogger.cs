@@ -7,7 +7,13 @@ internal class GitHubActionsLogger(
     IExternalScopeProvider? scopeProvider
 ) : ILogger
 {
-    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+    public void Log<TState>(
+        LogLevel logLevel,
+        EventId eventId,
+        TState state,
+        Exception? exception,
+        Func<TState, Exception?, string> formatter
+    )
     {
         if (!IsEnabled(logLevel))
         {
