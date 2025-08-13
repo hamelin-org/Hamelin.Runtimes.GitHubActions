@@ -83,8 +83,9 @@ public interface IGitHubActionsCommands
     void EndGroup();
 
     /// <summary>
-    /// Sets the job summary for the GitHub Actions run.
+    /// Writes content to the job summary for the GitHub Actions run.
     /// </summary>
-    /// <param name="summary">The summary text to set. GitHub flavored Markdown is supported.s</param>
-    void SetJobSummary(string summary);
+    /// <param name="summary">The summary text to write. GitHub flavored Markdown is supported.</param>
+    /// <param name="cancellationToken">A token that can be used to cancel the operation.</param>
+    Task AppendJobSummary(string summary, CancellationToken cancellationToken = default);
 }

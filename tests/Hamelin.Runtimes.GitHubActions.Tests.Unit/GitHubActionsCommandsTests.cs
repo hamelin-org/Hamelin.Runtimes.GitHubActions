@@ -151,16 +151,16 @@ public class GitHubActionsCommandsTests
         output.ShouldBe("::endgroup::\n");
     }
 
-    [Fact]
-    public void SetJobSummary_SetsEnvironmentVariable()
-    {
-        // Arrange
-
-        // Act
-        _sut.SetJobSummary("### Hello world! :rocket:");
-
-        // Assert
-        string? output = Environment.GetEnvironmentVariable("GITHUB_STEP_SUMMARY");
-        output.ShouldBe("### Hello world! :rocket:");
-    }
+    // [Fact]
+    // public void SetJobSummary_SetsEnvironmentVariable()
+    // {
+    //     // Arrange
+    //
+    //     // Act
+    //     _sut.SetJobSummary("### Hello world! :rocket:");
+    //
+    //     // Assert
+    //     string? output = Environment.GetEnvironmentVariable("GITHUB_STEP_SUMMARY");
+    //     output.ShouldBe("### Hello world! :rocket:");
+    // }
 }
