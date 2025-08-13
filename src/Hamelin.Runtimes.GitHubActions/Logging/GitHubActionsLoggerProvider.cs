@@ -4,7 +4,7 @@ namespace Hamelin.Runtimes.GitHubActions.Logging;
 
 internal class GitHubActionsLoggerProvider(
     IGitHubActionsCommands commands,
-    IExternalScopeProvider? scopeProvider
+    IExternalScopeProvider? scopeProvider = null
 ) : ILoggerProvider
 {
     public ILogger CreateLogger(string categoryName) => new GitHubActionsLogger(commands, scopeProvider);
