@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace Hamelin.Runtimes.GitHubActions.Tests.Unit.Logging;
 
+[Collection("Console")]
 public class GitHubActionsConsoleFormatterTests
 {
     private readonly StringWriter _writer = new();

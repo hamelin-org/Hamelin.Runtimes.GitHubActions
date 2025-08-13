@@ -1,5 +1,6 @@
 namespace Hamelin.Runtimes.GitHubActions.Tests.Unit;
 
+[Collection("Console")]
 public class GitHubActionsCommandsTests
 {
     private readonly StringWriter _writer = new();
