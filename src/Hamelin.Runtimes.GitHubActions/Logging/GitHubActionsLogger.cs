@@ -35,9 +35,13 @@ internal class GitHubActionsLogger(
             case LogLevel.Warning:
                 commands.LogWarning(message);
                 break;
+            case LogLevel.Information:
+                commands.LogNotice(message);
+                break;
             case LogLevel.Trace:
             case LogLevel.Debug:
-            case LogLevel.Information:
+                commands.LogDebug(message);
+                break;
             case LogLevel.None:
             default:
                 // Do nothing.
@@ -45,10 +49,7 @@ internal class GitHubActionsLogger(
         }
     }
 
-    public bool IsEnabled(LogLevel logLevel)
-    {
-        return logLevel is LogLevel.Critical or LogLevel.Error or LogLevel.Warning;
-    }
+    public bool IsEnabled(LogLevel logLevel) => logLevel is not LogLevel.None;
 
     public IDisposable? BeginScope<TState>(TState state) where TState : notnull => scopeProvider?.Push(state) ?? null;
 }
