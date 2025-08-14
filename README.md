@@ -16,9 +16,7 @@ dotnet add package Hamelin.Runtimes.GitHubActions
 
 To add GitHub Actions runtime support to your Hamelin pipeline, you can use the `AddGitHubActionsRuntime` extension method on the `IServiceCollection`.
 
-Runtime integration will only be fully registered if the `GitHubActionsRuntimeOptions.RuntimeDetector` detects that the application is running in a GitHub Actions environment. By default, this is done by checking the `GITHUB_ACTIONS` environment variable. If you need to customize this behavior, you can provide your own `RuntimeDetector` implementation.
-
-If the runtime isn't detected, you will still be able to inject `IGitHubActionsCommands` into your pipeline steps, but a stub implementation will be resolved instead.
+Runtime integration will only be fully registered if the `GitHubActionsRuntimeOptions.RuntimeDetector` detects that the application is running in a GitHub Actions environment. See [Runtime Detection](#runtime-detection) for more details.
 
 ```csharp
 using Hamelin;
@@ -38,6 +36,17 @@ var pipeline = builder.Build();
 
 await pipeline.RunAsync();
 ```
+### Options
+
+You can configure the GitHub Actions runtime by providing options to the `AddGitHubActionsRuntime` method. The options allow you to customize the behavior of the runtime, such as the runtime detector and logging settings.s
+
+### Runtime Detection
+
+The runtime integration will only be fully registered if the `RuntimeDetector` delegate returns `true`. By default, this is done by checking for the presence of the `GITHUB_ACTIONS` environment variable. If you need to customize this behavior, you can provide your own `RuntimeDetector` implementation.
+
+If the runtime isn't detected, you will still be able to inject `IGitHubActionsCommands` into your pipeline steps, but a stub implementation will be resolved instead.
+
+If you need to check if the runtime is detected, you can inject the `IGitHubActionsContext` interface, which provides an `IsEnabled` property.
 
 ### Logging
 

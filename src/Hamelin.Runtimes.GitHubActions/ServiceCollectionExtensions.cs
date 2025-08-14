@@ -21,11 +21,18 @@ public static class ServiceCollectionExtensions
         var options = new GitHubActionsRuntimeOptions();
         configure?.Invoke(options);
 
-        if (options.RuntimeDetector())
+        var context = new GitHubActionsContext
+        {
+            IsEnabled = options.RuntimeDetector()
+        };
+
+        services.TryAddSingleton<IGitHubActionsContext>(context);
+        services.TryAddEnumerable(ServiceDescriptor.Singleton<ConsoleFormatter, GitHubActionsConsoleFormatter>());
+
+        if (context.IsEnabled)
         {
             services.TryAddSingleton<IGitHubActionsCommands, GitHubActionsCommands>();
-            services.TryAddEnumerable(ServiceDescriptor.Singleton<ConsoleFormatter, GitHubActionsConsoleFormatter>());
-            if (options.EnableLogFormatting)
+            if (options.EnableLogFormatter)
             {
                 services.Configure<ConsoleLoggerOptions>(o => o.FormatterName = Constants.FormatterName);
             }

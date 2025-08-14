@@ -9,7 +9,7 @@ public class GitHubActionsRuntimeOptions
     /// Determines whether log messages should be formatted for GitHub Actions.
     /// This will surface warnings and errors in a way that GitHub Actions recognizes, allowing them to be displayed prominently in the Actions UI.
     /// </summary>
-    public bool EnableLogFormatting { get; set; } = true;
+    public bool EnableLogFormatter { get; set; } = true;
 
     /// <summary>
     /// The function that detects if the current runtime is GitHub Actions.
