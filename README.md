@@ -37,7 +37,7 @@ await pipeline.RunAsync();
 
 ### Logging
 
-The GitHub Actions integration includes a logging provider that surfaces errors and warnings in the GitHub Actions UI.
+The GitHub Actions integration includes a logging formatter that adapts the logging output for GitHub Actions. Warnings and errors are raised as notices on the pipeline, and debug logs are outputted using `::debug::` syntax which makes them respect GitHub Actions' debug setting.
 
 ### Commands
 

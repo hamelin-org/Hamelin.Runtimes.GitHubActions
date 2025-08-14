@@ -55,10 +55,17 @@ public class GitHubActionsCommands : IGitHubActionsCommands
     }
 
     /// <inheritdoc />
-    public void SetJobSummary(string summary)
+    public async Task AppendJobSummary(string summary, CancellationToken cancellationToken = default)
     {
         // The discrepancy between "job summary" and "step summary" is as per GitHub's documentation.
-        Environment.SetEnvironmentVariable("GITHUB_STEP_SUMMARY", summary);
+        const string envVarName = "GITHUB_JOB_SUMMARY";
+        string? path = Environment.GetEnvironmentVariable(envVarName);
+        if (path == null)
+        {
+            throw new InvalidOperationException($"Environment variable '{envVarName}' is not set. " +
+                                                $"Ensure that you are running this in a GitHub Actions environment.");
+        }
+        await File.WriteAllTextAsync(path, summary, cancellationToken);
     }
 
     private static void WriteFileCommand(
