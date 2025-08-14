@@ -27,16 +27,101 @@ public class GitHubActionsConsoleFormatterTests
     }
 
     [Fact]
-    public void LogWarning_Text_ShouldLog()
+    public void LogCritical_TextOnly_LogsError()
     {
         // Arrange
 
         // Act
-        _logger.LogWarning("Test warning");
+        _logger.LogCritical("Test Critical");
         _provider.Dispose();
 
-        // Asserts
+        // Assert
         string output = _writer.ToString();
-        output.ShouldBe("::warning::Test warning\n");
+        output.ShouldBe("::error::Test Critical\n");
+    }
+
+    [Fact]
+    public void LogError_TextOnly_LogsError()
+    {
+        // Arrange
+
+        // Act
+        _logger.LogError("Test Error");
+        _provider.Dispose();
+
+        // Assert
+        string output = _writer.ToString();
+        output.ShouldBe("::error::Test Error\n");
+    }
+
+    [Fact]
+    public void LogError_WithException_LogsErrorWithExceptionDetails()
+    {
+        // Arrange
+        var ex = new Exception("Test Exception");
+
+        // Act
+        _logger.LogError(ex, "Test Error");
+        _provider.Dispose();
+
+        // Assert
+        string output = _writer.ToString();
+        output.ShouldBe("::error::Test Error\nSystem.Exception: Test Exception\n");
+    }
+
+    [Fact]
+    public void LogWarning_TextOnly_LogsWarning()
+    {
+        // Arrange
+
+        // Act
+        _logger.LogWarning("Test Warning");
+        _provider.Dispose();
+
+        // Assert
+        string output = _writer.ToString();
+        output.ShouldBe("::warning::Test Warning\n");
+    }
+
+    [Fact]
+    public void LogInformation_TextOnly_LogsInformation()
+    {
+        // Arrange
+
+        // Act
+        _logger.LogInformation("Test Information");
+        _provider.Dispose();
+
+        // Assert
+        string output = _writer.ToString();
+        output.ShouldBe("Information: Test Information\n");
+    }
+
+    [Fact]
+    public void LogDebug_TextOnly_LogsDebug()
+    {
+        // Arrange
+
+        // Act
+        _logger.LogDebug("Test Debug");
+        _provider.Dispose();
+
+        // Assert
+        string output = _writer.ToString();
+        output.ShouldBe("::debug::Test Debug\n");
+    }
+
+    [Fact]
+    public void LogTrace_TextOnly_LogsTrace()
+    {
+        // Arrange
+
+        // Act
+        _logger.LogTrace("Test Trace");
+        _provider.Dispose();
+
+        // Assert
+        string output = _writer.ToString();
+        output.ShouldBe("::debug::Test Trace\n");
     }
 }

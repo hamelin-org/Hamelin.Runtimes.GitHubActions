@@ -23,7 +23,7 @@ internal class GitHubActionsConsoleFormatter() : ConsoleFormatter(Constants.Form
                 break;
             case LogLevel.Information:
                 // No special formatting for Information level
-                textWriter.Write("Inforation: ");
+                textWriter.Write("Information: ");
                 break;
             case LogLevel.Debug:
             case LogLevel.Trace:
