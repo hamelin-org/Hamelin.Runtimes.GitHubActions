@@ -157,7 +157,6 @@ public class GitHubActionsCommandsTests
     [Fact]
     public async Task AppendJobSummary_WritesToSummaryFile()
     {
-
         // Arrange
         string tempFile = Path.GetTempFileName();
         Environment.SetEnvironmentVariable("GITHUB_JOB_SUMMARY", tempFile);
