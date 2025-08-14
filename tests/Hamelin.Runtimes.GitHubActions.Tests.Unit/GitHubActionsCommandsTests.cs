@@ -1,3 +1,5 @@
+using System.Formats.Asn1;
+
 namespace Hamelin.Runtimes.GitHubActions.Tests.Unit;
 
 [Collection("Console")]
@@ -152,16 +154,26 @@ public class GitHubActionsCommandsTests
         output.ShouldBe("::endgroup::\n");
     }
 
-    // [Fact]
-    // public void SetJobSummary_SetsEnvironmentVariable()
-    // {
-    //     // Arrange
-    //
-    //     // Act
-    //     _sut.SetJobSummary("### Hello world! :rocket:");
-    //
-    //     // Assert
-    //     string? output = Environment.GetEnvironmentVariable("GITHUB_STEP_SUMMARY");
-    //     output.ShouldBe("### Hello world! :rocket:");
-    // }
+    [Fact]
+    public async Task AppendJobSummary_WritesToSummaryFile()
+    {
+
+        // Arrange
+        string tempFile = Path.GetTempFileName();
+        Environment.SetEnvironmentVariable("GITHUB_JOB_SUMMARY", tempFile);
+
+        try
+        {
+            // Act
+            await _sut.AppendJobSummary("### Hello world! :rocket:", TestContext.Current.CancellationToken);
+
+            // Assert
+            string output = await File.ReadAllTextAsync(tempFile, TestContext.Current.CancellationToken);
+            output.ShouldBe("### Hello world! :rocket:");
+        }
+        finally
+        {
+            File.Delete(tempFile);
+        }
+    }
 }
