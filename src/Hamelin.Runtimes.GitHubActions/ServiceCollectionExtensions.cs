@@ -1,3 +1,4 @@
+using Hamelin.Hooks;
 using Hamelin.Runtimes.GitHubActions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -35,6 +36,11 @@ public static class ServiceCollectionExtensions
             if (options.EnableLogFormatter)
             {
                 services.Configure<ConsoleLoggerOptions>(o => o.FormatterName = Constants.FormatterName);
+            }
+            if (options.EnableLogGrouping)
+            {
+                services.TryAddEnumerable(ServiceDescriptor.Singleton<IPreStepHook, StepGroupingPreStepHook>());
+                services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostStepHook, StepGroupingPostStepHook>());
             }
         }
         else

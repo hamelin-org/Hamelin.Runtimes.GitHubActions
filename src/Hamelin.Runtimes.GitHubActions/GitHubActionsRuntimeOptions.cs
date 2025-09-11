@@ -12,6 +12,11 @@ public class GitHubActionsRuntimeOptions
     public bool EnableLogFormatter { get; set; } = true;
 
     /// <summary>
+    /// Determines whether log messages should be grouped by step name in the GitHub Actions console.
+    /// </summary>
+    public bool EnableLogGrouping { get; set; } = true;
+
+    /// <summary>
     /// The function that detects if the current runtime is GitHub Actions.
     /// </summary>
     /// <remarks>
