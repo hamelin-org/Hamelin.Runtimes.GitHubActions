@@ -6,8 +6,6 @@ namespace Hamelin.Runtimes.GitHubActions.Logging;
 
 internal class GitHubActionsConsoleFormatter() : ConsoleFormatter(Constants.FormatterName)
 {
-    private const string UrlEncodedNewLine = "%0A";
-
     public override void Write<TState>(
         in LogEntry<TState> logEntry,
         IExternalScopeProvider? scopeProvider,
@@ -39,14 +37,13 @@ internal class GitHubActionsConsoleFormatter() : ConsoleFormatter(Constants.Form
         }
 
         string message = logEntry.Formatter.Invoke(logEntry.State, logEntry.Exception);
+        message = StringUtils.SanitizeNewLines(message);
         textWriter.Write(message);
 
         if (logEntry.Exception != null)
         {
-            textWriter.Write(UrlEncodedNewLine);
-            string exceptionMessage = logEntry.Exception.ToString()
-                .Replace("\r", "")
-                .Replace("\n", UrlEncodedNewLine);
+            textWriter.Write(StringUtils.UrlEncodedNewLine);
+            string exceptionMessage = StringUtils.SanitizeNewLines(logEntry.Exception.ToString());
             textWriter.Write(exceptionMessage);
         }
         textWriter.WriteLine();

@@ -79,7 +79,7 @@ public class GitHubActionsCommands : IGitHubActionsCommands
         int? endColumn = null
     )
     {
-        var args = new Dictionary<string, string?>()
+        var args = new Dictionary<string, string?>
         {
             { "title", title },
             { "file", file },
@@ -105,6 +105,8 @@ public class GitHubActionsCommands : IGitHubActionsCommands
                 argString = " " + string.Join(",", existingArgs);
             }
         }
+
+        message = StringUtils.SanitizeNewLines(message);
         Console.Out.WriteLine($"::{command}{argString}::{message}");
     }
 }
