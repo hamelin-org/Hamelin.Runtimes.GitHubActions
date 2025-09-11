@@ -1,5 +1,7 @@
 # Hamelin.Runtimes.GitHubActions
 
+[![Pull Request](https://github.com/hamelin-org/Hamelin.Runtimes.GitHubActions/actions/workflows/pr.yml/badge.svg)](https://github.com/hamelin-org/Hamelin.Runtimes.GitHubActions/actions/workflows/pr.yml) [![Release](https://github.com/hamelin-org/Hamelin.Runtimes.GitHubActions/actions/workflows/release.yml/badge.svg)](https://github.com/hamelin-org/Hamelin.Runtimes.GitHubActions/actions/workflows/release.yml)
+
 This package adds integration for running Hamelin pipelines in a GitHub Actions environment.
 
 ## Installation
