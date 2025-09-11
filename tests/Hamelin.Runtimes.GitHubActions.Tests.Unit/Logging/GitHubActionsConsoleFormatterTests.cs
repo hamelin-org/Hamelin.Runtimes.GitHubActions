@@ -66,7 +66,7 @@ public class GitHubActionsConsoleFormatterTests
 
         // Assert
         string output = _writer.ToString();
-        output.ShouldBe("::error::Test Error\nSystem.Exception: Test Exception\n");
+        output.ShouldBe("::error::Test Error%0ASystem.Exception: Test Exception\n");
     }
 
     [Fact]

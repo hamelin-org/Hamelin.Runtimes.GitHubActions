@@ -37,10 +37,15 @@ internal class GitHubActionsConsoleFormatter() : ConsoleFormatter(Constants.Form
         }
 
         string message = logEntry.Formatter.Invoke(logEntry.State, logEntry.Exception);
-        textWriter.WriteLine(message);
+        message = StringUtils.SanitizeNewLines(message);
+        textWriter.Write(message);
+
         if (logEntry.Exception != null)
         {
-            textWriter.WriteLine(logEntry.Exception.ToString());
+            textWriter.Write(StringUtils.UrlEncodedNewLine);
+            string exceptionMessage = StringUtils.SanitizeNewLines(logEntry.Exception.ToString());
+            textWriter.Write(exceptionMessage);
         }
+        textWriter.WriteLine();
     }
 }
