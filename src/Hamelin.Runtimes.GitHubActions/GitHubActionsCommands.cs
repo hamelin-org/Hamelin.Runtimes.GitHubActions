@@ -58,7 +58,11 @@ public class GitHubActionsCommands(ILogger<GitHubActionsCommands> logger) : IGit
     }
 
     /// <inheritdoc />
-    public IDisposable WithGroup(string title) => new DisposableGroup(this);
+    public IDisposable WithGroup(string title)
+    {
+        BeginGroup(title);
+        return new DisposableGroup(this);
+    }
 
     /// <inheritdoc />
     public async Task AppendJobSummary(string summary, CancellationToken cancellationToken = default)
