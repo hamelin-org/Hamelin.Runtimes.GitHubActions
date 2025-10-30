@@ -19,6 +19,12 @@ internal class GitHubActionsCommandsStub : IGitHubActionsCommands
     public void BeginGroup(string title) { }
 
     public void EndGroup() { }
+    public IDisposable WithGroup(string title) => new NullDisposable();
 
     public Task AppendJobSummary(string summary, CancellationToken cancellationToken = default) => Task.CompletedTask;
+
+    private class NullDisposable : IDisposable
+    {
+        public void Dispose() { }
+    }
 }

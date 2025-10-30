@@ -1,4 +1,6 @@
-using System.Formats.Asn1;
+using Hamelin.Runtimes.GitHubActions.Logging;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 
 namespace Hamelin.Runtimes.GitHubActions.Tests.Unit;
 
@@ -6,11 +8,20 @@ namespace Hamelin.Runtimes.GitHubActions.Tests.Unit;
 public class GitHubActionsCommandsTests
 {
     private readonly StringWriter _writer = new();
-    private readonly GitHubActionsCommands _sut = new();
+    private readonly ILoggerFactory _loggerFactory;
+
+    private readonly GitHubActionsCommands _sut;
 
     public GitHubActionsCommandsTests()
     {
         Console.SetOut(_writer);
+
+        _loggerFactory = LoggerFactory.Create(b => b
+            .AddConsole(o => o.FormatterName = Constants.FormatterName)
+            .AddConsoleFormatter<GitHubActionsConsoleFormatter, ConsoleFormatterOptions>()
+        );
+        var logger = _loggerFactory.CreateLogger<GitHubActionsCommands>();
+        _sut = new GitHubActionsCommands(logger);
     }
 
     [Fact]
@@ -20,6 +31,7 @@ public class GitHubActionsCommandsTests
 
         // Act
         _sut.LogDebug("This is a debug message");
+        _loggerFactory.Dispose();
 
         // Assert
         string output = _writer.ToString();
