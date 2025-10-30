@@ -126,6 +126,12 @@ public class GitHubActionsCommands(ILogger<GitHubActionsCommands> logger) : IGit
 
     private class DisposableGroup(IGitHubActionsCommands commands) : IDisposable
     {
-        public void Dispose() => commands.EndGroup();
+        private bool _disposed;
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+            commands.EndGroup();
+        }
     }
 }
