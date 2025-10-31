@@ -7,7 +7,7 @@ namespace Hamelin.Runtimes.GitHubActions;
 /// <remarks>
 /// Based on https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands
 /// </remarks>
-public class GitHubActionsCommands(ILogger<GitHubActionsCommands> logger) : IGitHubActionsCommands
+internal class GitHubActionsCommands(ILogger<GitHubActionsCommands> logger) : IGitHubActionsCommands
 {
     /// <inheritdoc />
     public void LogDebug(string message) => WriteCommand("debug", message, null);
