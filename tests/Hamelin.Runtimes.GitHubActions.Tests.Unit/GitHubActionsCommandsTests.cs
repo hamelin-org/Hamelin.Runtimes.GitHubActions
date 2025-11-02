@@ -1,4 +1,6 @@
-using System.Formats.Asn1;
+using Hamelin.Runtimes.GitHubActions.Logging;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 
 namespace Hamelin.Runtimes.GitHubActions.Tests.Unit;
 
@@ -6,11 +8,20 @@ namespace Hamelin.Runtimes.GitHubActions.Tests.Unit;
 public class GitHubActionsCommandsTests
 {
     private readonly StringWriter _writer = new();
-    private readonly GitHubActionsCommands _sut = new();
+    private readonly ILoggerFactory _loggerFactory;
+
+    private readonly GitHubActionsCommands _sut;
 
     public GitHubActionsCommandsTests()
     {
         Console.SetOut(_writer);
+
+        _loggerFactory = LoggerFactory.Create(b => b
+            .AddConsole(o => o.FormatterName = Constants.FormatterName)
+            .AddConsoleFormatter<GitHubActionsConsoleFormatter, ConsoleFormatterOptions>()
+        );
+        var logger = _loggerFactory.CreateLogger<GitHubActionsCommands>();
+        _sut = new GitHubActionsCommands(logger);
     }
 
     [Fact]
@@ -20,6 +31,7 @@ public class GitHubActionsCommandsTests
 
         // Act
         _sut.LogDebug("This is a debug message");
+        _loggerFactory.Dispose();
 
         // Assert
         string output = _writer.ToString();
@@ -41,6 +53,7 @@ public class GitHubActionsCommandsTests
             startColumn: 3,
             endColumn: 4
         );
+        _loggerFactory.Dispose();
 
         // Assert
         string output = _writer.ToString();
@@ -54,6 +67,7 @@ public class GitHubActionsCommandsTests
 
         // Act
         _sut.LogNotice("This is a notice message");
+        _loggerFactory.Dispose();
 
         // Assert
         string output = _writer.ToString();
@@ -75,6 +89,7 @@ public class GitHubActionsCommandsTests
             startColumn: 3,
             endColumn: 4
         );
+        _loggerFactory.Dispose();
 
         // Assert
         string output = _writer.ToString();
@@ -88,6 +103,7 @@ public class GitHubActionsCommandsTests
 
         // Acts
         _sut.LogWarning("This is a warning message");
+        _loggerFactory.Dispose();
 
         // Assert
         string output = _writer.ToString();
@@ -109,6 +125,7 @@ public class GitHubActionsCommandsTests
             startColumn: 3,
             endColumn: 4
         );
+        _loggerFactory.Dispose();
 
         // Assert
         string output = _writer.ToString();
@@ -122,6 +139,7 @@ public class GitHubActionsCommandsTests
 
         // Acts
         _sut.LogError("This is an error message");
+        _loggerFactory.Dispose();
 
         // Assert
         string output = _writer.ToString();
@@ -135,6 +153,7 @@ public class GitHubActionsCommandsTests
 
         // Act
         _sut.BeginGroup("Title");
+        _loggerFactory.Dispose();
 
         // Assert
         string output = _writer.ToString();
@@ -148,6 +167,7 @@ public class GitHubActionsCommandsTests
 
         // Act
         _sut.EndGroup();
+        _loggerFactory.Dispose();
 
         // Assert
         string output = _writer.ToString();
@@ -174,5 +194,36 @@ public class GitHubActionsCommandsTests
         {
             File.Delete(tempFile);
         }
+    }
+
+    [Fact]
+    public void WithGroup_DisposesCorrectly_LogsBothGroupAndEndGroup()
+    {
+        // Arrange
+        var group = _sut.WithGroup("Test Group");
+
+        // Act
+        group.Dispose();
+        _loggerFactory.Dispose();
+
+        // Assert
+        string output = _writer.ToString();
+        output.ShouldBe("::group::Test Group\n::endgroup::\n");
+    }
+
+    [Fact]
+    public void WithGroup_MultipleDisposeCalls_OnlyLogsOnce()
+    {
+        // Arrange
+        IDisposable group = _sut.WithGroup("Test Group");
+
+        // Act
+        group.Dispose();
+        group.Dispose();
+        _loggerFactory.Dispose();
+
+        // Assert
+        string output = _writer.ToString();
+        output.ShouldBe("::group::Test Group\n::endgroup::\n");
     }
 }

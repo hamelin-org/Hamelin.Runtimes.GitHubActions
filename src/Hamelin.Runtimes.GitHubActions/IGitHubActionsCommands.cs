@@ -83,6 +83,13 @@ public interface IGitHubActionsCommands
     void EndGroup();
 
     /// <summary>
+    /// Starts an expandable group in the GitHub Actions log, which completes when the returned object is disposed.
+    /// </summary>
+    /// <param name="title">The title of the group.</param>
+    /// <returns>A disposable object that will complete the group.</returns>
+    IDisposable WithGroup(string title);
+
+    /// <summary>
     /// Writes content to the job summary for the GitHub Actions run.
     /// </summary>
     /// <param name="summary">The summary text to write. GitHub flavored Markdown is supported.</param>

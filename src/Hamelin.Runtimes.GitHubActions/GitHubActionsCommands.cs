@@ -1,10 +1,13 @@
+using Hamelin.Runtimes.GitHubActions.Logging;
+using Microsoft.Extensions.Logging;
+
 namespace Hamelin.Runtimes.GitHubActions;
 
 /// <inheritdoc />
 /// <remarks>
 /// Based on https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands
 /// </remarks>
-public class GitHubActionsCommands : IGitHubActionsCommands
+internal class GitHubActionsCommands(ILogger<GitHubActionsCommands> logger) : IGitHubActionsCommands
 {
     /// <inheritdoc />
     public void LogDebug(string message) => WriteCommand("debug", message, null);
@@ -55,6 +58,13 @@ public class GitHubActionsCommands : IGitHubActionsCommands
     }
 
     /// <inheritdoc />
+    public IDisposable WithGroup(string title)
+    {
+        BeginGroup(title);
+        return new DisposableGroup(this);
+    }
+
+    /// <inheritdoc />
     public async Task AppendJobSummary(string summary, CancellationToken cancellationToken = default)
     {
         // The discrepancy between "job summary" and "step summary" is as per GitHub's documentation.
@@ -65,10 +75,11 @@ public class GitHubActionsCommands : IGitHubActionsCommands
             throw new InvalidOperationException($"Environment variable '{envVarName}' is not set. " +
                                                 $"Ensure that you are running this in a GitHub Actions environment.");
         }
+
         await File.WriteAllTextAsync(path, summary, cancellationToken);
     }
 
-    private static void WriteFileCommand(
+    private void WriteFileCommand(
         string command,
         string message,
         string? title = null,
@@ -91,7 +102,7 @@ public class GitHubActionsCommands : IGitHubActionsCommands
         WriteCommand(command, message, args);
     }
 
-    private static void WriteCommand(string command, string message, Dictionary<string, string?>? args)
+    private void WriteCommand(string command, string message, Dictionary<string, string?>? args)
     {
         string argString = "";
         if (args != null)
@@ -107,6 +118,20 @@ public class GitHubActionsCommands : IGitHubActionsCommands
         }
 
         message = StringUtils.SanitizeNewLines(message);
-        Console.Out.WriteLine($"::{command}{argString}::{message}");
+        string commandText = $"::{command}{argString}::{message}";
+
+        // Use a special event ID so the formatter knows to output the command as-is.
+        logger.LogInformation(Constants.RawCommandEventId, "{Command}", commandText);
+    }
+
+    private class DisposableGroup(IGitHubActionsCommands commands) : IDisposable
+    {
+        private bool _disposed;
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+            commands.EndGroup();
+        }
     }
 }

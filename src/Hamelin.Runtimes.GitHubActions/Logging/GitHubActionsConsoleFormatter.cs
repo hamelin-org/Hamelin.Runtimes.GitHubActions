@@ -12,6 +12,16 @@ internal class GitHubActionsConsoleFormatter() : ConsoleFormatter(Constants.Form
         TextWriter textWriter
     )
     {
+        // Check if this is a raw GitHub Actions command
+        // Important to check this by NAME because EventId equality goes by the numeric Id.
+        if (logEntry.EventId.Name == Constants.RawCommandEventId.Name)
+        {
+            // Write the message directly without any formatting
+            string rawMessage = logEntry.Formatter.Invoke(logEntry.State, logEntry.Exception);
+            textWriter.WriteLine(rawMessage);
+            return;
+        }
+
         switch (logEntry.LogLevel)
         {
             case LogLevel.Critical:
